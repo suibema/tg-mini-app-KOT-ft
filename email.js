@@ -5,7 +5,7 @@ document.getElementById('email-form').addEventListener('submit', async function 
 
   // Query NocoDB for this email
   try {
-    const res = await fetch(`http://ndb.fut.ru/api/v2/tables/mg9vvteq5xw37lc?where=email,eq,${encodeURIComponent(email)}`, {
+    const res = await fetch(`https://ndb.fut.ru/api/v2/tables/mg9vvteq5xw37lc?where=email,eq,${encodeURIComponent(email)}`, {
       method: 'GET',
       headers: {
         'accept': 'application/json',
