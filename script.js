@@ -64,7 +64,7 @@ async function handleSubmit(autoSubmit = false) {
   // await sendToNocoDB({ email: data.email, score: score, autoSubmit });
 
   console.log('[Simulated Submit] Email:', data.email, 'Score:', score, 'AutoSubmit:', autoSubmit);
-  resultEl.textContent = `Test submitted`;
+  resultEl.textContent = `Test submitted. Score: ${score}/2`;
   form.style.display = 'none';
   localStorage.removeItem('testStartTime');
 }
