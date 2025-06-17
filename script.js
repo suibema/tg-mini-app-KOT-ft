@@ -8,12 +8,6 @@ const correctAnswers = {
   q2: 'hello'
 };
 
-function formatTime(seconds) {
-  const m = Math.floor(seconds / 60).toString().padStart(2, '0');
-  const s = (seconds % 60).toString().padStart(2, '0');
-  return `${m}:${s}`;
-}
-
 function getTimeLeft() {
   const start = parseInt(localStorage.getItem('testStartTime'), 10);
   const now = Math.floor(Date.now() / 1000);
@@ -26,7 +20,6 @@ function startTimer() {
 
   const interval = setInterval(() => {
     timeLeft = getTimeLeft();
-    timerEl.textContent = `Time left: ${formatTime(timeLeft)}`;
 
     if (timeLeft <= 0) {
       clearInterval(interval);
@@ -36,9 +29,15 @@ function startTimer() {
 }
 
 function initializeTimerOnce() {
+  if (localStorage.getItem('testSubmitted') === 'true') {
+    form.style.display = 'none';
+    return;
+  }
+
   if (!localStorage.getItem('testStartTime')) {
     localStorage.setItem('testStartTime', Math.floor(Date.now() / 1000));
   }
+
   startTimer();
 }
 
@@ -53,20 +52,22 @@ async function handleSubmit(autoSubmit = false) {
   const formData = new FormData(form);
   const data = Object.fromEntries(formData.entries());
 
-  if (!data.email) {
+  if (!data.email && !autoSubmit) {
     alert('Please enter your email.');
     return;
   }
 
   const score = calculateScore(data);
 
-  // Normally, you'd send this to NocoDB here:
-  // await sendToNocoDB({ email: data.email, score: score, autoSubmit });
-
+  // Simulated submission
   console.log('[Simulated Submit] Email:', data.email, 'Score:', score, 'AutoSubmit:', autoSubmit);
-  resultEl.textContent = `Test submitted. Score: ${score}/2`;
+
   form.style.display = 'none';
+  localStorage.setItem('testSubmitted', 'true');
   localStorage.removeItem('testStartTime');
+
+  // Optionally show a simple confirmation message (no score)
+  resultEl.textContent = 'Test submitted successfully.';
 }
 
 form.addEventListener('submit', async (e) => {
