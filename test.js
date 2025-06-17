@@ -62,14 +62,21 @@ async function submitForm(auto = false) {
   const score = calculateScore(data);
   console.log('Submitting', { ...data, score });
 
-  // Replace this with your actual backend call to NocoDB later
-  /*
-  await fetch('https://your-backend.com/submit', {
+  await fetch(`https://your-nocodb.com/api/v1/db/data/v1/YourProject/TestSubmissions`, {
     method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({ ...data, score })
+    headers: {
+      'Content-Type': 'application/json',
+      'accept': 'application/json',
+      'xc-token': 'your_nocodb_token'
+    },
+    body: JSON.stringify({
+      email: data.email,
+      q1: data.q1,
+      q2: data.q2,
+      score: score
+    })
   });
-  */
+
 
   localStorage.setItem('test_submitted', 'true');
   localStorage.removeItem('start_time');
