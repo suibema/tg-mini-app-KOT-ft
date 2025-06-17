@@ -7,14 +7,39 @@ const correctAnswers = {
   q2: 'hello'
 };
 
+// --- Safe storage functions (sessionStorage first, fallback to localStorage) ---
+function safeStorageSet(key, value) {
+  try {
+    sessionStorage.setItem(key, value);
+  } catch (e) {
+    localStorage.setItem(key, value);
+  }
+}
+
+function safeStorageGet(key) {
+  try {
+    return sessionStorage.getItem(key) || localStorage.getItem(key);
+  } catch (e) {
+    return localStorage.getItem(key);
+  }
+}
+
+function safeStorageRemove(key) {
+  try {
+    sessionStorage.removeItem(key);
+  } catch (e) {}
+  localStorage.removeItem(key);
+}
+
+// --- Save and restore form input ---
 function saveFormData() {
   const formData = new FormData(form);
   const data = Object.fromEntries(formData.entries());
-  localStorage.setItem('testFormData', JSON.stringify(data));
+  safeStorageSet('testFormData', JSON.stringify(data));
 }
 
 function restoreFormData() {
-  const saved = localStorage.getItem('testFormData');
+  const saved = safeStorageGet('testFormData');
   if (saved) {
     const data = JSON.parse(saved);
     for (const [key, value] of Object.entries(data)) {
@@ -24,8 +49,9 @@ function restoreFormData() {
   }
 }
 
+// --- Timer logic ---
 function getTimeLeft() {
-  const start = parseInt(localStorage.getItem('testStartTime'), 10);
+  const start = parseInt(safeStorageGet('testStartTime'), 10);
   const now = Math.floor(Date.now() / 1000);
   const elapsed = now - start;
   return Math.max(DURATION - elapsed, 0);
@@ -36,7 +62,6 @@ function startTimer() {
 
   const interval = setInterval(() => {
     timeLeft = getTimeLeft();
-
     if (timeLeft <= 0) {
       clearInterval(interval);
       handleSubmit(true);
@@ -45,20 +70,21 @@ function startTimer() {
 }
 
 function initializeTimerOnce() {
-  if (localStorage.getItem('testSubmitted') === 'true') {
+  if (safeStorageGet('testSubmitted') === 'true') {
     form.style.display = 'none';
     resultEl.textContent = 'Test already submitted.';
     return;
   }
 
-  if (!localStorage.getItem('testStartTime')) {
-    localStorage.setItem('testStartTime', Math.floor(Date.now() / 1000));
+  if (!safeStorageGet('testStartTime')) {
+    safeStorageSet('testStartTime', Math.floor(Date.now() / 1000));
   }
 
   restoreFormData();
   startTimer();
 }
 
+// --- Score checking ---
 function calculateScore(data) {
   let score = 0;
   if (data.q1 === correctAnswers.q1) score++;
@@ -66,13 +92,14 @@ function calculateScore(data) {
   return score;
 }
 
+// --- Submit handler ---
 async function handleSubmit(autoSubmit = false) {
   const formData = new FormData(form);
   let data = Object.fromEntries(formData.entries());
 
   // Try to recover saved form data if needed
-  if (!data.email && autoSubmit) {
-    const saved = localStorage.getItem('testFormData');
+  if ((!data.email || data.email.trim() === '') && autoSubmit) {
+    const saved = safeStorageGet('testFormData');
     if (saved) {
       data = JSON.parse(saved);
     }
@@ -84,21 +111,17 @@ async function handleSubmit(autoSubmit = false) {
   }
 
   const score = calculateScore(data);
-
   console.log('[Submit]', data.email, 'Score:', score, 'Auto:', autoSubmit);
 
   form.style.display = 'none';
-  localStorage.setItem('testSubmitted', 'true');
-  localStorage.removeItem('testStartTime');
-  localStorage.removeItem('testFormData');
-
   resultEl.textContent = 'Test submitted successfully.';
+  safeStorageSet('testSubmitted', 'true');
+  safeStorageRemove('testStartTime');
+  safeStorageRemove('testFormData');
 }
 
-// Save input changes live
+// --- Event listeners ---
 form.addEventListener('input', saveFormData);
-
-// Submit on click
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   await handleSubmit();
