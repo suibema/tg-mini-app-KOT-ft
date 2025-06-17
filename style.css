@@ -1,0 +1,25 @@
+body {
+    font-family: sans-serif;
+    background: #f9f9f9;
+    padding: 20px;
+  }
+  
+  .container {
+    max-width: 500px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  label {
+    display: block;
+    margin: 15px 0;
+  }
+  
+  input, select, button {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+  }
+  
