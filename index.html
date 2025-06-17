@@ -2,37 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Test Form</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Email Input</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>Candidate Test</h1>
-    <form id="test-form">
-      <label>Email:
-        <input type="email" name="email" required />
-      </label>
+  <h2>Enter your email to start the test</h2>
+  <form id="email-form">
+    <input type="email" name="email" id="email" required placeholder="your@email.com" />
+    <button type="submit">Start Test</button>
+  </form>
+  <p id="email-error" style="color: red;"></p>
 
-      <label>1. Choose correct answer:
-        <select name="q1" required>
-          <option value="">--Choose--</option>
-          <option value="a">Option A</option>
-          <option value="b">Option B</option>
-          <option value="c">Option C</option>
-        </select>
-      </label>
-
-      <label>2. Write your answer:
-        <input type="text" name="q2" required />
-      </label>
-
-      <button type="submit">Submit</button>
-    </form>
-    <p id="timer">Time left: 16:00</p>
-    <p id="result"></p>
-  </div>
-
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script src="script.js"></script>
+  <script src="email.js"></script>
 </body>
 </html>
