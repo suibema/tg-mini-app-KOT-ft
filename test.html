@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Test</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <form id="test-form">
+    <label>Question 1: Choose B</label>
+    <select name="q1" required>
+      <option value="">Select</option>
+      <option value="a">A</option>
+      <option value="b">B</option>
+      <option value="c">C</option>
+    </select>
+
+    <label>Question 2: Type "hello"</label>
+    <input type="text" name="q2" required />
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <p id="result"></p>
+
+  <script src="test.js"></script>
+</body>
+</html>
