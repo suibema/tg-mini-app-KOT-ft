@@ -5,11 +5,11 @@ document.getElementById('email-form').addEventListener('submit', async function 
 
   // Query NocoDB for this email
   try {
-    const res = await fetch(`https://your-nocodb.com/api/v1/db/data/v1/YourProject/TestSubmissions?where=email,eq,${encodeURIComponent(email)}`, {
+    const res = await fetch(`http://ndb.fut.ru/api/v2/tables/mg9vvteq5xw37lc?where=email,eq,${encodeURIComponent(email)}`, {
       method: 'GET',
       headers: {
         'accept': 'application/json',
-        'xc-token': 'your_nocodb_token'
+        'xc-token': 'crDte8gB-CSZzNujzSsy9obQRqZYkY3SNp8wre88'
       }
     });
 
