@@ -1,91 +1,94 @@
-  <script>
-    const token = 'crDte8gB-CSZzNujzSsy9obQRqZYkY3SNp8wre88e';
+const form = document.getElementById('test-form');
+const resultEl = document.getElementById('result');
+const DURATION = 16 * 60;
+const correctAnswers = { q1: 'b', q2: 'hello' };
 
-    // 16 minutes
-    const MAX_TIME = 16 * 60 * 1000;
+// Start time and email
+const email = localStorage.getItem('test_email');
+if (!email) window.location.href = 'index.html';
 
-    const q1 = document.getElementById('q1');
-    const q2 = document.getElementById('q2');
-    const email = localStorage.getItem('test_email');
+if (localStorage.getItem('test_submitted') === 'true') {
+  form.style.display = 'none';
+  resultEl.textContent = 'Test already submitted.';
+}
 
-    if (!email) window.location.href = 'email.html';
+function saveForm() {
+  const formData = new FormData(form);
+  const data = Object.fromEntries(formData.entries());
+  localStorage.setItem('test_data', JSON.stringify(data));
+}
 
-    // Restore answers
-    q1.value = localStorage.getItem('q1') || '';
-    q2.value = localStorage.getItem('q2') || '';
+function restoreForm() {
+  const saved = JSON.parse(localStorage.getItem('test_data') || '{}');
+  for (const [k, v] of Object.entries(saved)) {
+    if (form.elements[k]) form.elements[k].value = v;
+  }
+}
 
-    q1.addEventListener('input', () => localStorage.setItem('q1', q1.value));
-    q2.addEventListener('change', () => localStorage.setItem('q2', q2.value));
+function startTimer() {
+  if (!localStorage.getItem('start_time')) {
+    localStorage.setItem('start_time', Date.now());
+  }
 
-    // ⏱ Start or resume timer
-    let startTime = localStorage.getItem('test_start_time');
-    if (!startTime) {
-      startTime = Date.now();
-      localStorage.setItem('test_start_time', startTime);
-    } else {
-      startTime = parseInt(startTime);
+  const checkInterval = setInterval(() => {
+    const start = parseInt(localStorage.getItem('start_time'));
+    const now = Date.now();
+    const elapsed = Math.floor((now - start) / 1000);
+
+    if (elapsed >= DURATION) {
+      clearInterval(checkInterval);
+      submitForm(true);
     }
+  }, 1000);
+}
 
-    const timeLeftEl = document.getElementById('time-left');
-    const submitBtn = document.getElementById('submit-btn');
+function calculateScore(data) {
+  let score = 0;
+  if (data.q1 === correctAnswers.q1) score++;
+  if (data.q2.trim().toLowerCase() === correctAnswers.q2) score++;
+  return score;
+}
 
-    const updateTimer = () => {
-      const elapsed = Date.now() - startTime;
-      const remaining = MAX_TIME - elapsed;
+async function submitForm(auto = false) {
+  const formData = new FormData(form);
+  const data = Object.fromEntries(formData.entries());
+  data.email = email;
 
-      if (remaining <= 0) {
-        timeLeftEl.textContent = '⏰ Time is up. Test locked.';
-        submitBtn.disabled = true;
-        q1.disabled = true;
-        q2.disabled = true;
-        return;
-      }
+  if (!data.q1 || !data.q2) {
+    if (!auto) alert('Fill all fields');
+    return;
+  }
 
-      const mins = Math.floor(remaining / 60000);
-      const secs = Math.floor((remaining % 60000) / 1000);
-      timeLeftEl.textContent = `Time left: ${mins}:${secs.toString().padStart(2, '0')}`;
-      requestAnimationFrame(updateTimer);
-    };
+  const score = calculateScore(data);
+  console.log('Submitting', { ...data, score });
 
-    updateTimer(); // start the timer loop
+  await fetch(`https://ndb.fut.ru/api/v2/tables/mg9vvteq5xw37lc/records`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'accept': 'application/json',
+      'xc-token': 'crDte8gB-CSZzNujzSsy9obQRqZYkY3SNp8wre88'
+    },
+    body: JSON.stringify({
+      email: data.email,
+      score: score
+    })
+  });
 
-    // ✅ Submit logic
-    document.getElementById('test-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
 
-      const elapsed = Date.now() - startTime;
-      if (elapsed > MAX_TIME) {
-        document.getElementById('status').textContent = 'Too late! Time expired.';
-        return;
-      }
+  localStorage.setItem('test_submitted', 'true');
+  localStorage.removeItem('start_time');
+  localStorage.removeItem('test_data');
 
-      const answers = {
-        email: email,
-        score: (q1.value.toLowerCase() === 'correct' && q2.value === 'A') ? 2 : 0
-      };
+  form.style.display = 'none';
+  resultEl.textContent = 'Test submitted successfully.';
+}
 
-      try {
-        const res = await fetch('https://ndb.fut.ru/api/v2/tables/mg9vvteq5xw37lc/records', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'xc-token': token
-          },
-          body: JSON.stringify({ data: answers })
-        });
+form.addEventListener('input', saveForm);
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  submitForm();
+});
 
-        if (res.ok) {
-          localStorage.clear();
-          document.getElementById('status').textContent = 'Test submitted successfully!';
-          document.getElementById('test-form').reset();
-        } else {
-          throw new Error('Submission failed');
-        }
-      } catch (err) {
-        console.error(err);
-        document.getElementById('status').textContent = 'Failed to submit test.';
-      }
-    });
-  </script>
-</body>
-</html>
+restoreForm();
+startTimer();
