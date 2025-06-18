@@ -7,6 +7,9 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <div id="timer" style="font-size: 1.2em; font-weight: bold; margin-bottom: 20px;">
+    Time remaining: <span id="time-display">16:00</span>
+  </div>
   <form id="test-form">
     <label>Question 1: Choose B</label>
     <select name="q1" required>
@@ -22,7 +25,8 @@
     <button type="submit">Submit</button>
   </form>
 
-  <p id="result"></p>
+  <p id="result" style="color: green;"></p>
+  <p id="error" style="color: red;"></p>
 
   <script src="test.js"></script>
 </body>
