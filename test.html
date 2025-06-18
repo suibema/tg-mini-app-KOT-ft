@@ -1,25 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Test</title>
-  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <h2>Answer the questions</h2>
   <form id="test-form">
-    <label>Question 1: Choose B</label>
-    <select name="q1" required>
-      <option value="">Select</option>
-      <option value="a">A</option>
-      <option value="b">B</option>
-      <option value="c">C</option>
-    </select>
-
-    <label>Question 2: Type "hello"</label>
-    <input type="text" name="q2" required />
-
-    <button type="submit">Submit</button>
+    <label>Question 1:
+      <input type="text" id="q1" required>
+    </label><br><br>
+    <label>Question 2:
+      <select id="q2" required>
+        <option value="">Choose...</option>
+        <option value="A">A</option>
+        <option value="B">B</option>
+      </select>
+    </label><br><br>
+    <button type="submit" id="submit-btn">Submit</button>
+    <p id="status" style="color:green;"></p>
+    <p id="time-left"></p>
   </form>
 
   <p id="result"></p>
