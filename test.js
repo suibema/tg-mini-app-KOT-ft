@@ -62,17 +62,15 @@ async function submitForm(auto = false) {
   const score = calculateScore(data);
   console.log('Submitting', { ...data, score });
 
-  await fetch(`https://your-nocodb.com/api/v1/db/data/v1/YourProject/TestSubmissions`, {
+  await fetch(`https://ndb.fut.ru/api/v2/tables/mg9vvteq5xw37lc/records`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'accept': 'application/json',
-      'xc-token': 'your_nocodb_token'
+      'xc-token': 'crDte8gB-CSZzNujzSsy9obQRqZYkY3SNp8wre88'
     },
     body: JSON.stringify({
       email: data.email,
-      q1: data.q1,
-      q2: data.q2,
       score: score
     })
   });
