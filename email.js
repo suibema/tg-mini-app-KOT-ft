@@ -5,7 +5,7 @@ document.getElementById('email-form').addEventListener('submit', async function 
 
   // Query NocoDB for this email
   try {
-    const res = await fetch(`https://ndb.fut.ru/api/v2/tables/mg9vvteq5xw37lc/records/count?where=email,eq,${encodeURIComponent(email)}`, {
+    const res = await fetch(`https://ndb.fut.ru/api/v2/tables/mg9vvteq5xw37lc/records/count?where=(email,eq,${encodeURIComponent(email)})`, {
       method: 'GET',
       headers: {
         'accept': 'application/json',
@@ -15,7 +15,7 @@ document.getElementById('email-form').addEventListener('submit', async function 
 
     const data = await res.json();
 
-    if (data.list && data.list.length > 0) {
+    if (data.count > 0) {
       errorEl.textContent = 'You have already submitted the test.';
       return;
     }
