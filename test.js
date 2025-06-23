@@ -2,8 +2,19 @@ const form = document.getElementById('test-form');
 const resultEl = document.getElementById('result');
 const errorEl = document.getElementById('error');
 const timeDisplay = document.getElementById('time-display');
-const DURATION = 16 * 60; // 16 minutes in seconds
-const correctAnswers = { q1: 'b', q2: 'hello' };
+const DURATION = 16 * 60;
+const correctAnswers = { 
+  q1: 'a', q2: 'c', q3: 'd', q4: 'b', q5: 'скрипка', q6: 'c', q7: 'c', q8: 'c', q9: 'c', q10: '125', 
+  q11: 'ста', q12: '80', q13: 'c', q14: 'd', q15: '0,07', q16: 'никогда', q17: 'a', q18: '2', q19: 'ласка', q20: 'a',
+  q21: '25', q22: '75', q23: 'a', q24: 'c', q25: '0,27', q26: 'b', q27: '150', q28: 'c', q29: 'abd', q30: 'a',
+  q31: '12546', q32: '14', q33: '1', q34: 'a', q35: 'дельфин', q36: 'c', q37: '480', q38: 'c', q39: '20', q40: '1/6',
+  q41: 'c', q42: '0,1', q43: 'a', q44: '50', q45: '25', q46: '3500', q47: '25', q48: 'c', q49: '2', q50: '17'
+};
+
+const questionTypes = {};
+['q1', 'q2', 'q3', 'q4', 'q6', 'q7', 'q8', 'q9', 'q13', 'q14', 'q17', 'q20', 'q23', 'q24', 'q26', 'q28', 'q30', 'q34', 'q36', 'q38', 'q41', 'q43', 'q48'].forEach(q => questionTypes[q] = 'dropdown');
+['q5', 'q10', 'q11', 'q12', 'q15', 'q16', 'q18', 'q19', 'q21', 'q22', 'q25', 'q27', 'q31', 'q33', 'q35', 'q37', 'q39', 'q40', 'q42', 'q44', 'q45', 'q46', 'q49', 'q50'].forEach(q => questionTypes[q] = 'text');
+['q29', 'q32', 'q47'].forEach(q => questionTypes[q] = 'checkbox');
 
 // Redirect if no email
 const email = localStorage.getItem('test_email');
@@ -12,22 +23,39 @@ if (!email) window.location.href = 'index.html';
 // Prevent re-submission
 if (localStorage.getItem('test_submitted') === 'true') {
   form.style.display = 'none';
-  timeDisplay.parentElement.style.display = 'none';
+  timeDisplay.parentNode.style.display = 'none';
   resultEl.textContent = 'Test already submitted.';
 }
 
-// Save form data on input
+// Save form data
 function saveForm() {
   const formData = new FormData(form);
-  const data = Object.fromEntries(formData.entries());
+  const data = {};
+  for (let i = 1; i <= 50; i++) {
+    const qName = `q${i}`;
+    if (questionTypes[qName] === 'checkbox') {
+      data[qName] = Array.from(formData.getAll(qName));
+    } else {
+      data[qName] = formData.get(qName) || '';
+    }
+  }
   localStorage.setItem('test_data', JSON.stringify(data));
 }
 
 // Restore form data
 function restoreForm() {
   const saved = JSON.parse(localStorage.getItem('test_data') || '{}');
-  for (const [k, v] of Object.entries(saved)) {
-    if (form.elements[k]) form.elements[k].value = v;
+  for (let i = 1; i <= 50; i++) {
+    const qName = `q${i}`;
+    if (questionTypes[qName] === 'checkbox' && Array.isArray(saved[qName])) {
+      saved[qName].forEach(value => {
+        const checkbox = document.querySelector(`input[name="${qName}"][value="${value}"]`);
+        if (checkbox) checkbox.checked = true;
+      });
+    } else if (['dropdown', 'text'].includes(questionTypes[qName]) && saved[qName]) {
+      const input = form.elements[qName];
+      if (input) input.value = saved[qName];
+    }
   }
 }
 
@@ -63,21 +91,40 @@ function startTimer() {
 // Calculate score
 function calculateScore(data) {
   let score = 0;
-  if (data.q1 === correctAnswers.q1) score++;
-  if (data.q2.trim().toLowerCase() === correctAnswers.q2) score++;
+  for (let i = 1; i <= 50; i++) {
+    const qName = `q${i}`;
+    const answer = data[qName];
+    const correct = correctAnswers[qName];
+    if (questionTypes[qName] === 'checkbox') {
+      // Score 1 if all correct options are selected
+      if (Array.isArray(answer) && Array.isArray(correct.split('').sort()) && 
+          JSON.stringify(answer.sort()) === JSON.stringify(correct.split('').sort())) {
+        score++;
+      }
+    } else if (questionTypes[qName] === 'dropdown') {
+      // Score 1 if exact match
+      if (answer === correct) score++;
+    } else if (questionTypes[qName] === 'text') {
+      // Score 1 if case-insensitive match
+      if (answer.trim().toLowerCase() === correct.toString().toLowerCase()) score++;
+    }
+  }
   return score;
 }
 
 // Submit form
 async function submitForm(auto = false) {
   const formData = new FormData(form);
-  const data = Object.fromEntries(formData.entries());
-  data.email = email;
-
-  if (!auto && (!data.q1 || !data.q2)) {
-    errorEl.textContent = 'Please fill all fields.';
-    return;
+  const data = {};
+  for (let i = 1; i <= 50; i++) {
+    const qName = `q${i}`;
+    if (questionTypes[qName] === 'checkbox') {
+      data[qName] = Array.from(formData.getAll(qName));
+    } else {
+      data[qName] = formData.get(qName) || '';
+    }
   }
+  data.email = email;
 
   const score = calculateScore(data);
   console.log('Submitting', { ...data, score });
@@ -105,7 +152,7 @@ async function submitForm(auto = false) {
     localStorage.removeItem('test_data');
 
     form.style.display = 'none';
-    timeDisplay.parentElement.style.display = 'none';
+    timeDisplay.parentNode.style.display = 'none';
     resultEl.textContent = 'Test submitted successfully.';
     errorEl.textContent = '';
   } catch (err) {
