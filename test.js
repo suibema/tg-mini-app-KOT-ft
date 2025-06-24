@@ -31,7 +31,7 @@ if (localStorage.getItem('test_submitted') === 'true') {
 function saveForm() {
   const formData = new FormData(form);
   const data = {};
-  for (let i = 1; i <= 51; i++) {
+  for (let i = 1; i <= 50; i++) {
     const qName = `q${i}`;
     if (questionTypes[qName] === 'checkbox') {
       data[qName] = Array.from(formData.getAll(qName));
@@ -45,7 +45,7 @@ function saveForm() {
 // Restore form data
 function restoreForm() {
   const saved = JSON.parse(localStorage.getItem('test_data') || '{}');
-  for (let i = 1; i <= 51; i++) {
+  for (let i = 1; i <= 50; i++) {
     const qName = `q${i}`;
     if (questionTypes[qName] === 'checkbox' && Array.isArray(saved[qName])) {
       saved[qName].forEach(value => {
@@ -91,7 +91,7 @@ function startTimer() {
 // Calculate score
 function calculateScore(data) {
   let score = 0;
-  for (let i = 1; i <= 51; i++) {
+  for (let i = 1; i <= 50; i++) {
     const qName = `q${i}`;
     const answer = data[qName];
     const correct = correctAnswers[qName];
@@ -116,7 +116,7 @@ function calculateScore(data) {
 async function submitForm(auto = false) {
   const formData = new FormData(form);
   const data = {};
-  for (let i = 1; i <= 51; i++) {
+  for (let i = 1; i <= 50; i++) {
     const qName = `q${i}`;
     if (questionTypes[qName] === 'checkbox') {
       data[qName] = Array.from(formData.getAll(qName));
