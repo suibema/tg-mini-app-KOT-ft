@@ -101,7 +101,7 @@ box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
 }
 
 button {
-width: 25%;
+width: 35%;
 padding: 12px;
 background-color: #F46D00;
 color: white;
@@ -224,4 +224,9 @@ h2 {
 }
 }
 
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
 
