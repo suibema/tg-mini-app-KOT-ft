@@ -14,12 +14,12 @@ document.getElementById('email-form').addEventListener('submit', async function 
 
     const data_found_email = await find_email.json();
 
-    if (data_found_email.count = 0) {
+    if (data_found_email.count === 0) {
       errorEl.textContent = 'You have not submitted the reg.';
       return;
     }
 
-    const res = await fetch(`https://ndb.fut.ru/api/v2/tables/maiff22q0tefj6t/records/count?where=(E-mail,eq,test@com)~and(Результат КОТ,neq,'')`, {
+    const res = await fetch(`https://ndb.fut.ru/api/v2/tables/maiff22q0tefj6t/records/count?where=(E-mail,eq,${encodeURIComponent(email)})~and(Результат КОТ,neq,'')`, {
       method: 'GET',
       headers: {
         'accept': 'application/json',
