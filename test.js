@@ -2,7 +2,7 @@ const form = document.getElementById('test-form');
 const resultEl = document.getElementById('result');
 const errorEl = document.getElementById('error');
 const timeDisplay = document.getElementById('time-display');
-const DURATION = 160 * 60;
+const DURATION = 16 * 60;
 const correctAnswers = { 
   q1: 'a', q2: 'c', q3: 'd', q4: 'b', q5: 'скрипка', q6: 'c', q7: 'c', q8: 'c', q9: 'c', q10: '125', 
   q11: 'ста', q12: '80', q13: 'c', q14: 'd', q15: '0,07', q16: 'никогда', q17: 'a', q18: '2', q19: 'ласка', q20: 'a',
