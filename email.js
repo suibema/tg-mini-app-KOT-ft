@@ -19,7 +19,7 @@ document.getElementById('email-form').addEventListener('submit', async function 
       return;
     }
 
-    const res = await fetch(`https://ndb.fut.ru/api/v2/tables/maiff22q0tefj6t/records/count?where=(E-mail,eq,${encodeURIComponent(email)})~and(Результат КОТ,neq,'')`, {
+    const res = await fetch(`https://ndb.fut.ru/api/v2/tables/maiff22q0tefj6t/records/count?where=(E-mail,eq,${encodeURIComponent(email)}),(Результат КОТ,neq,'')`, {
       method: 'GET',
       headers: {
         'accept': 'application/json',
