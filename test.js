@@ -122,31 +122,44 @@ async function submitForm(auto = false) {
   console.log('Submitting', { ...data, score });
 
   try {
-    const find = await fetch(`https://ndb.fut.ru/api/v2/tables/maiff22q0tefj6t/records?fields=Id?where=(E-mail,eq,${encodeURIComponent(email)})`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'accept': 'application/json',
-        'xc-token': 'crDte8gB-CSZzNujzSsy9obQRqZYkY3SNp8wre88'
-      },
-    });
-    const found_id = await find.json();
+    try {
+      const find = await fetch(`https://ndb.fut.ru/api/v2/tables/maiff22q0tefj6t/records?where=(E-mail,eq,${encodeURIComponent(email)})&fields=Id`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'accept': 'application/json',
+          'xc-token': 'crDte8gB-CSZzNujzSsy9obQRqZYkY3SNp8wre88'
+        },
+      });
+      const foundData = await find.json();
+      if (!foundData.list || foundData.list.length === 0) {
+        errorEl.textContent = 'No record found for this email.';
+        return;
+      }
+      const recordId = foundData.list[0].Id;
 
-    const res = await fetch(`https://ndb.fut.ru/api/v2/tables/maiff22q0tefj6t/records`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        'accept': 'application/json',
-        'xc-token': 'crDte8gB-CSZzNujzSsy9obQRqZYkY3SNp8wre88'
-      },
-      body: JSON.stringify({
-        Id: found_id,
-        "Результат КОТ": score
-      })
-    });
-
-    if (!res.ok) {
-      throw new Error(`HTTP error! Status: ${res.status}`);
+      // Update score
+      const res = await fetch(`https://ndb.fut.ru/api/v2/tables/maiff22q0tefj6t/records`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'accept': 'application/json',
+          'xc-token': 'crDte8gB-CSZzNujzSsy9obQRqZYkY3SNp8wre88'
+        },
+        body: JSON.stringify({
+          "Id": recordId,
+          "Результат КОТ": score,
+          "Дата получения ответа на тест": new Date().toISOString()
+        })
+      });
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(`Update failed: ${errorText}`);
+      }
+    } catch (err) {
+      console.error(err);
+      errorEl.textContent = 'Failed to update score. Please try again.';
+      return;
     }
 
     localStorage.setItem('test_submitted', 'true');
