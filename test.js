@@ -2,14 +2,13 @@ const form = document.getElementById('test-form');
 const resultEl = document.getElementById('result');
 const errorEl = document.getElementById('error');
 const timeDisplay = document.getElementById('time-display');
-const DURATION = 16 * 60;
+const DURATION = 160 * 60;
 const correctAnswers = { 
   q1: 'a', q2: 'c', q3: 'd', q4: 'b', q5: 'скрипка', q6: 'c', q7: 'c', q8: 'c', q9: 'c', q10: '125', 
   q11: 'ста', q12: '80', q13: 'c', q14: 'd', q15: '0,07', q16: 'никогда', q17: 'a', q18: '2', q19: 'ласка', q20: 'a',
   q21: '25', q22: '75', q23: 'a', q24: 'c', q25: '0,27', q26: 'b', q27: '150', q28: 'c', q29: 'abd', q30: 'a',
   q31: '12546', q32: 'ad', q33: '1', q34: 'a', q35: 'дельфин', q36: 'c', q37: '480', q38: 'c', q39: '20', q40: '1/6',
-  q41: 'c', q42: '0,1', q43: 'a', q44: '50', q45: '25', q46: '3500', q47: 'be', q48: 'c', q49: '2', q50: '17'
-};
+  q41: 'c', q42: '0,1', q43: 'a', q44: '50', q45: '25', q46: '3500', q47: 'be', q48: 'c', q49: '2', q50: '17'};
 
 const questionTypes = {};
 ['q1', 'q2', 'q3', 'q4', 'q6', 'q7', 'q8', 'q9', 'q13', 'q14', 'q17', 'q20', 'q23', 'q24', 'q26', 'q28', 'q30', 'q34', 'q36', 'q38', 'q41', 'q43', 'q48'].forEach(q => questionTypes[q] = 'dropdown');
@@ -19,13 +18,6 @@ const questionTypes = {};
 // Redirect if no email
 const email = localStorage.getItem('test_email');
 if (!email) window.location.href = 'index.html';
-
-// Prevent re-submission
-if (localStorage.getItem('test_submitted') === 'true') {
-  form.style.display = 'none';
-  timeDisplay.parentNode.style.display = 'none';
-  resultEl.textContent = 'Test already submitted.';
-}
 
 // Save form data
 function saveForm() {
@@ -130,16 +122,26 @@ async function submitForm(auto = false) {
   console.log('Submitting', { ...data, score });
 
   try {
-    const res = await fetch(`https://ndb.fut.ru/api/v2/tables/mg9vvteq5xw37lc/records`, {
-      method: 'POST',
+    const find = await fetch(`https://ndb.fut.ru/api/v2/tables/maiff22q0tefj6t/records?fields=Id?where=(E-mail,eq,${encodeURIComponent(email)})`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'accept': 'application/json',
+        'xc-token': 'crDte8gB-CSZzNujzSsy9obQRqZYkY3SNp8wre88'
+      },
+    });
+    const found_id = await find.json();
+
+    const res = await fetch(`https://ndb.fut.ru/api/v2/tables/maiff22q0tefj6t/records`, {
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
         'accept': 'application/json',
         'xc-token': 'crDte8gB-CSZzNujzSsy9obQRqZYkY3SNp8wre88'
       },
       body: JSON.stringify({
-        email: data.email,
-        score: score
+        Id: found_id,
+        "Результат КОТ": score
       })
     });
 
