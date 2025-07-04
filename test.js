@@ -168,11 +168,11 @@ async function submitForm(auto = false) {
 
     form.style.display = 'none';
     timeDisplay.parentNode.style.display = 'none';
-    resultEl.textContent = 'Test submitted successfully.';
+    resultEl.textContent = 'Спасибо, твой тест успешно принят!';
     errorEl.textContent = '';
   } catch (err) {
     console.error('Submission error:', err);
-    errorEl.textContent = 'Failed to submit test. Please try again.';
+    errorEl.textContent = 'Ошибка отправки теста';
   }
 }
 
