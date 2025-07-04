@@ -19,7 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 document.getElementById('email-form').addEventListener('submit', async function (e) {
   e.preventDefault();
-  const email = document.getElementById('email').value.trim();
   const errorEl = document.getElementById('email-error');
 
   try {
