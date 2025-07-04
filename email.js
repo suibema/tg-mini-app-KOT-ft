@@ -33,7 +33,7 @@ document.getElementById('email-form').addEventListener('submit', async function 
     const data_found_email = await find_email.json();
 
     if (data_found_email.count === 0) {
-      errorEl.textContent = 'You have not submitted the reg.';
+      errorEl.textContent = 'Не нашли тебя в базе регистрации! Пожалуйста, зарегистрируйся через форму в боте или напиши нам с вопросом';
       return;
     }
 
@@ -48,7 +48,7 @@ document.getElementById('email-form').addEventListener('submit', async function 
     const data = await res.json();
 
     if (data.count > 0) {
-      errorEl.textContent = 'You have already submitted the test.';
+      errorEl.textContent = 'Мы уже получили результат твоего теста и скоро вернёмся с ответом 😊';
       return;
     }
 
@@ -56,6 +56,6 @@ document.getElementById('email-form').addEventListener('submit', async function 
     window.location.href = 'test.html';
   } catch (err) {
     console.error(err);
-    errorEl.textContent = 'Server error. Please try again.';
+    errorEl.textContent = 'Ошибка сервера. Повтори попытку позже';
   }
 });
