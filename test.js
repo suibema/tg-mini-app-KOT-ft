@@ -123,7 +123,7 @@ async function submitForm(auto = false) {
 
   try {
     try {
-      const find = await fetch(`https://ndb.fut.ru/api/v2/tables/maiff22q0tefj6t/records?where=(E-mail,eq,${encodeURIComponent(email)})&fields=Id`, {
+      const find = await fetch(`https://ndb.fut.ru/api/v2/tables/maiff22q0tefj6t/records?where=(tg-id,eq,${encodeURIComponent(email)})&fields=Id`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -133,7 +133,7 @@ async function submitForm(auto = false) {
       });
       const foundData = await find.json();
       if (!foundData.list || foundData.list.length === 0) {
-        errorEl.textContent = 'No record found for this email.';
+        errorEl.textContent = 'No record found for this tg id.';
         return;
       }
       const recordId = foundData.list[0].Id;
