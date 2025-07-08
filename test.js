@@ -69,7 +69,7 @@ function startTimer() {
     const now = Date.now();
     const elapsed = Math.floor((now - start) / 1000);
     const remaining = Math.max(0, DURATION - elapsed);
-
+    localStorage.setItem('remaining_time', remaining);
     timeDisplay.textContent = formatTime(remaining);
 
     if (remaining <= 0) {
@@ -162,7 +162,7 @@ async function submitForm(auto = false) {
         recordData[`${i} вопрос`] = data[`q${i}`] || '';
       }
       recordData['tg id'] = email
-      recordData['таймер'] = elapsed
+      recordData['таймер'] = localStorage.getItem('remaining_time');
       const createResponse = await fetch('https://ndb.fut.ru/api/v2/tables/mmnc7occi9ztnm0/records', {
         method: 'POST',
         headers: {
