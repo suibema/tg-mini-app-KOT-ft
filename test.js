@@ -161,6 +161,20 @@ async function submitForm(auto = false) {
         const errorText = await res.text();
         throw new Error(`Update failed: ${errorText}`);
       }
+
+      const recordData = {};
+      for (let i = 1; i <= 50; i++) {
+        recordData[`${i} вопрос`] = data[`q${i}`] || '';
+      }
+      recordData['tg id'] = email
+      const createResponse = await fetch('https://ndb.fut.ru/api/v2/tables/mmnc7occi9ztnm0/records', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'xc-token': 'crDte8gB-CSZzNujzSsy9obQRqZYkY3SNp8wre88'
+        },
+        body: JSON.stringify(recordData)
+      });
     } catch (err) {
       console.error(err);
       errorEl.textContent = 'Failed to update score. Please try again.';
