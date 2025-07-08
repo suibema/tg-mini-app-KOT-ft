@@ -183,7 +183,8 @@ async function submitForm(auto = false) {
 
     form.style.display = 'none';
     timeDisplay.parentNode.style.display = 'none';
-    resultEl.textContent = 'Спасибо, твой тест успешно принят!';
+    // resultEl.textContent = 'Спасибо, твой тест успешно принят!';
+    window.location.href = 'bye.html'
     errorEl.textContent = '';
   } catch (err) {
     console.error('Submission error:', err);
