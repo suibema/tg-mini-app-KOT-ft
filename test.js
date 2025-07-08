@@ -22,7 +22,6 @@ if (!email) window.location.href = 'index.html';
 if (localStorage.getItem('test_submitted')) {
   errorEl.textContent = 'Test already completed. Please contact support.';
   form.style.display = 'none'; // Hide form
-  return;
 }
 
 // Save form data
