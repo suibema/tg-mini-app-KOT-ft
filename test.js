@@ -18,6 +18,11 @@ const questionTypes = {};
 // Redirect if no email
 const email = localStorage.getItem('test_email');
 if (!email) window.location.href = 'index.html';
+if (localStorage.getItem('test_submitted')) {
+  errorEl.textContent = 'Твой тест уже отправлен. Свяжись с нами через бота, если что-то пошло не так';
+  form.style.display = 'none';
+  return;
+}
 
 // Save form data
 function saveForm() {
