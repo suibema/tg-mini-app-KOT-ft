@@ -19,11 +19,6 @@ const questionTypes = {};
 const email = localStorage.getItem('test_email');
 if (!email) window.location.href = 'index.html';
 
-if (localStorage.getItem('test_submitted')) {
-  errorEl.textContent = 'Test already completed. Please contact support.';
-  form.style.display = 'none'; // Hide form
-}
-
 // Save form data
 function saveForm() {
   const formData = new FormData(form);
