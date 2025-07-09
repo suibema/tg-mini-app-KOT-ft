@@ -121,6 +121,14 @@ async function submitForm(auto = false) {
   const score = calculateScore(data);
   console.log('Submitting', { ...data, score });
 
+  const submitBtn = this.querySelector('button[type="submit"]');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'ОТПРАВЛЯЕТСЯ...'
+  setTimeout(() => {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'ЗАВЕРШИТЬ'
+  }, 5000);
+
   try {
     try {
       const find = await fetch(`https://ndb.fut.ru/api/v2/tables/maiff22q0tefj6t/records?where=(tg-id,eq,${encodeURIComponent(email)})&fields=Id`, {
@@ -193,6 +201,11 @@ async function submitForm(auto = false) {
 }
 
 // Event listeners
+form.addEventListener('keydown', function (e) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+  }
+});
 form.addEventListener('input', saveForm);
 form.addEventListener('submit', (e) => {
   e.preventDefault();
