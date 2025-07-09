@@ -121,7 +121,7 @@ async function submitForm(auto = false) {
   const score = calculateScore(data);
   console.log('Submitting', { ...data, score });
 
-  const submitBtn = this.querySelector('button[type="submit"]');
+  const submitBtn = document.querySelector('button[type="submit"]');
   submitBtn.disabled = true;
   submitBtn.textContent = 'ОТПРАВЛЯЕТСЯ...'
   setTimeout(() => {
