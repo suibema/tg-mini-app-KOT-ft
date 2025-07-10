@@ -170,6 +170,7 @@ async function submitForm(auto = false) {
         recordData[`${i} вопрос`] = data[`q${i}`] || '';
       }
       recordData['tg id'] = email
+      recordData['device'] = navigator.userAgent
       recordData['таймер'] = localStorage.getItem('remaining_time');
       const createResponse = await fetch('https://ndb.fut.ru/api/v2/tables/mmnc7occi9ztnm0/records', {
         method: 'POST',
