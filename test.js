@@ -70,7 +70,6 @@ function startTimer() {
     const elapsed = Math.floor((now - start) / 1000);
     const remaining = Math.max(0, DURATION - elapsed);
     localStorage.setItem('remaining_time', remaining);
-    localStorage.setItem('time_elapsed', elapsed);
     timeDisplay.textContent = formatTime(remaining);
 
     if (remaining <= 0) {
@@ -216,8 +215,20 @@ form.addEventListener('submit', (e) => {
   submitForm();
 });
 
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    const start = parseInt(localStorage.getItem('start_time') || '0');
+    if (start) {
+      const now = Date.now();
+      const elapsed = Math.floor((now - start) / 1000);
+      localStorage.setItem('time_elapsed', elapsed);
+    }
+  }
+});
+
 // Initialize
 restoreForm();
 startTimer();
+
 
 
