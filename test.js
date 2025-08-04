@@ -70,6 +70,7 @@ function startTimer() {
     const elapsed = Math.floor((now - start) / 1000);
     const remaining = Math.max(0, DURATION - elapsed);
     localStorage.setItem('remaining_time', remaining);
+    localStorage.setItem('time_elapsed', elapsed);
     timeDisplay.textContent = formatTime(remaining);
 
     if (remaining <= 0) {
@@ -172,6 +173,7 @@ async function submitForm(auto = false) {
       recordData['tg id'] = email
       recordData['device'] = navigator.userAgent
       recordData['таймер'] = localStorage.getItem('remaining_time');
+      recordData['таймер (осталось при выходе)'] = parseInt(localStorage.getItem('time_elapsed') || '0');
       const createResponse = await fetch('https://ndb.fut.ru/api/v2/tables/mmnc7occi9ztnm0/records', {
         method: 'POST',
         headers: {
@@ -217,3 +219,4 @@ form.addEventListener('submit', (e) => {
 // Initialize
 restoreForm();
 startTimer();
+
