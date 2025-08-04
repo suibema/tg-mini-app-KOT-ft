@@ -173,7 +173,7 @@ async function submitForm(auto = false) {
       recordData['tg id'] = email
       recordData['device'] = navigator.userAgent
       recordData['таймер'] = localStorage.getItem('remaining_time');
-      recordData['таймер (осталось при выходе)'] = parseInt(localStorage.getItem('time_elapsed') || '0');
+      recordData['таймер (прошло при выходе)'] = parseInt(localStorage.getItem('time_elapsed') || '0');
       const createResponse = await fetch('https://ndb.fut.ru/api/v2/tables/mmnc7occi9ztnm0/records', {
         method: 'POST',
         headers: {
@@ -219,4 +219,5 @@ form.addEventListener('submit', (e) => {
 // Initialize
 restoreForm();
 startTimer();
+
 
