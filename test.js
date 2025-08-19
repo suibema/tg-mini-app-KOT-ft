@@ -131,7 +131,7 @@ async function submitForm(auto = false) {
 
   try {
     try {
-      const find = await fetch(`https://ndb.fut.ru/api/v2/tables/maiff22q0tefj6t/records?where=(tg-id,eq,${encodeURIComponent(email)})&fields=Id`, {
+      const find = await fetch(`https://ndb.fut.ru/api/v2/tables/m2zenv52yinuxda/records?where=(tg-id,eq,${encodeURIComponent(email)})&fields=Id`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -147,7 +147,7 @@ async function submitForm(auto = false) {
       const recordId = foundData.list[0].Id;
 
       // Update score
-      const res = await fetch(`https://ndb.fut.ru/api/v2/tables/maiff22q0tefj6t/records`, {
+      const res = await fetch(`https://ndb.fut.ru/api/v2/tables/m2zenv52yinuxda/records`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -157,7 +157,7 @@ async function submitForm(auto = false) {
         body: JSON.stringify({
           "Id": recordId,
           "Результат КОТ": score,
-          "Дата получения ответа на тест": new Date().toISOString()
+          "Дата получения ответа на КОТ": new Date().toISOString()
         })
       });
       if (!res.ok) {
@@ -173,7 +173,7 @@ async function submitForm(auto = false) {
       recordData['device'] = navigator.userAgent
       recordData['таймер'] = localStorage.getItem('remaining_time');
       recordData['таймер (прошло при выходе)'] = parseInt(localStorage.getItem('time_elapsed') || '0');
-      const createResponse = await fetch('https://ndb.fut.ru/api/v2/tables/mmnc7occi9ztnm0/records', {
+      const createResponse = await fetch('https://ndb.fut.ru/api/v2/tables/m5pi1wf5c6m7y6a/records', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -229,6 +229,7 @@ document.addEventListener('visibilitychange', () => {
 // Initialize
 restoreForm();
 startTimer();
+
 
 
 
