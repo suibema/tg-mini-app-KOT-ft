@@ -158,7 +158,11 @@ async function submitForm(auto = false) {
           "Id": recordId,
           "Результат КОТ": score,
           "Дата получения ответа на тест": new Date().toISOString(),
-          "Время получения ответа на тест": new Date().toISOString().match(/\d\d:\d\d/)
+          "Время получения ответа на тест": new Date().toLocaleTimeString("ru-RU", {
+                                    timeZone: "Europe/Moscow",
+                                    hour: "2-digit",
+                                    minute: "2-digit"
+                                  })
         })
       });
       if (!res.ok) {
@@ -230,6 +234,7 @@ document.addEventListener('visibilitychange', () => {
 // Initialize
 restoreForm();
 startTimer();
+
 
 
 
