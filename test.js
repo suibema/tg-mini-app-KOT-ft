@@ -157,7 +157,11 @@ async function submitForm(auto = false) {
         body: JSON.stringify({
           "Id": recordId,
           "Результат КОТ": score,
-          "Дата получения ответа на тест": new Date().toISOString(),
+          "Дата получения ответа на тест": new Date().toLocaleDateString("ru-RU", {
+                                    timeZone: "Europe/Moscow",
+                                    month: "2-digit",
+                                    day: "2-digit"
+                                  }),
           "Время получения ответа на тест": new Date().toLocaleTimeString("ru-RU", {
                                     timeZone: "Europe/Moscow",
                                     hour: "2-digit",
@@ -234,6 +238,7 @@ document.addEventListener('visibilitychange', () => {
 // Initialize
 restoreForm();
 startTimer();
+
 
 
 
