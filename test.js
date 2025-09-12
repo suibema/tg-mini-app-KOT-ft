@@ -159,8 +159,9 @@ async function submitForm(auto = false) {
           "Результат КОТ": score,
           "Дата получения ответа на тест": new Date().toLocaleDateString("ru-RU", {
                                     timeZone: "Europe/Moscow",
+                                    day: "2-digit",
                                     month: "2-digit",
-                                    day: "2-digit"
+                                    year: "4-digit"
                                   }),
           "Время получения ответа на тест": new Date().toLocaleTimeString("ru-RU", {
                                     timeZone: "Europe/Moscow",
@@ -238,6 +239,7 @@ document.addEventListener('visibilitychange', () => {
 // Initialize
 restoreForm();
 startTimer();
+
 
 
 
