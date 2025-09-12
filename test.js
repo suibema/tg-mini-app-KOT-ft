@@ -161,7 +161,7 @@ async function submitForm(auto = false) {
                                     timeZone: "Europe/Moscow",
                                     day: "2-digit",
                                     month: "2-digit",
-                                    year: "4-digit"
+                                    year: "2-digit"
                                   }),
           "Время получения ответа на тест": new Date().toLocaleTimeString("ru-RU", {
                                     timeZone: "Europe/Moscow",
@@ -239,6 +239,7 @@ document.addEventListener('visibilitychange', () => {
 // Initialize
 restoreForm();
 startTimer();
+
 
 
 
