@@ -1,5 +1,3 @@
-window.location.href = 'block.html';
-
 function getTelegramUserId() {
   if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe) {
     const user = Telegram.WebApp.initDataUnsafe.user;
