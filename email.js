@@ -1,4 +1,3 @@
-window.location.href = 'block.html';
 function getTelegramUserId() {
   if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe) {
     const user = Telegram.WebApp.initDataUnsafe.user;
@@ -23,11 +22,11 @@ document.getElementById('email-form').addEventListener('submit', async function 
   const errorEl = document.getElementById('email-error');
 
   try {
-    const find_email = await fetch(`https://ndb.fut.ru/api/v2/tables/m6tyxd3346dlhco/records/count?where=(tg-id,eq,${window.tgUserId})`, {
+    const find_email = await fetch(`https://noco.fut.ru/api/v2/tables/m9g4wpp9d81pzjr/records/count?where=(tg-id,eq,${window.tgUserId})`, {
       method: 'GET',
       headers: {
         'accept': 'application/json',
-        'xc-token': 'crDte8gB-CSZzNujzSsy9obQRqZYkY3SNp8wre88'
+        'xc-token': 'lSi7EzZD_NPfVIn4vWBCcgQCSPFwt3NjtQVzazpe'
       }
     });
 
@@ -38,11 +37,11 @@ document.getElementById('email-form').addEventListener('submit', async function 
       return;
     }
 
-    const res = await fetch(`https://ndb.fut.ru/api/v2/tables/m6tyxd3346dlhco/records/count?where=(tg-id,eq,${window.tgUserId})~and(Результат КОТ,neq,-1)`, {
+    const res = await fetch(`https://noco.fut.ru/api/v2/tables/m9g4wpp9d81pzjr/records/count?where=(tg-id,eq,${window.tgUserId})~and(Результат КОТ,neq,-1)`, {
       method: 'GET',
       headers: {
         'accept': 'application/json',
-        'xc-token': 'crDte8gB-CSZzNujzSsy9obQRqZYkY3SNp8wre88'
+        'xc-token': 'lSi7EzZD_NPfVIn4vWBCcgQCSPFwt3NjtQVzazpe'
       }
     });
 
