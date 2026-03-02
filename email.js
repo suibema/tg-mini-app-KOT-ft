@@ -37,7 +37,7 @@ document.getElementById('email-form').addEventListener('submit', async function 
       return;
     }
 
-    const res = await fetch(`https://noco.fut.ru/api/v2/tables/m6tyxd3346dlhco/records/count?where=(tg-id,eq,${window.tgUserId})~and(Результат КОТ,neq,-1)`, {
+    const res = await fetch(`https://ndb.fut.ru/api/v2/tables/m6tyxd3346dlhco/records/count?where=(tg-id,eq,${window.tgUserId})~and(Результат КОТ,neq,-1)`, {
       method: 'GET',
       headers: {
         'accept': 'application/json',
