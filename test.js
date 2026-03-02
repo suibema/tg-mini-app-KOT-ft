@@ -136,7 +136,7 @@ async function submitForm(auto = false) {
         headers: {
           'Content-Type': 'application/json',
           'accept': 'application/json',
-          'xc-token': 'lSi7EzZD_NPfVIn4vWBCcgQCSPFwt3NjtQVzazpe'
+          'xc-token': 'crDte8gB-CSZzNujzSsy9obQRqZYkY3SNp8wre88'
         },
       });
       const foundData = await find.json();
@@ -152,7 +152,7 @@ async function submitForm(auto = false) {
         headers: {
           'Content-Type': 'application/json',
           'accept': 'application/json',
-          'xc-token': 'lSi7EzZD_NPfVIn4vWBCcgQCSPFwt3NjtQVzazpe'
+          'xc-token': 'crDte8gB-CSZzNujzSsy9obQRqZYkY3SNp8wre88'
         },
         body: JSON.stringify({
           "Id": recordId,
@@ -182,7 +182,7 @@ async function submitForm(auto = false) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'xc-token': 'lSi7EzZD_NPfVIn4vWBCcgQCSPFwt3NjtQVzazpe'
+          'xc-token': 'crDte8gB-CSZzNujzSsy9obQRqZYkY3SNp8wre88'
         },
         body: JSON.stringify(recordData)
       });
@@ -234,6 +234,7 @@ document.addEventListener('visibilitychange', () => {
 // Initialize
 restoreForm();
 startTimer();
+
 
 
 
