@@ -131,7 +131,7 @@ async function submitForm(auto = false) {
 
   try {
     try {
-      const find = await fetch(`https://noco.fut.ru/api/v2/tables/m6tyxd3346dlhco/records?where=(tg-id,eq,${encodeURIComponent(email)})&fields=Id`, {
+      const find = await fetch(`https://ndb.fut.ru/api/v2/tables/m6tyxd3346dlhco/records?where=(tg-id,eq,${encodeURIComponent(email)})&fields=Id`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -147,7 +147,7 @@ async function submitForm(auto = false) {
       const recordId = foundData.list[0].Id;
 
       // Update score
-      const res = await fetch(`https://noco.fut.ru/api/v2/tables/m6tyxd3346dlhco/records`, {
+      const res = await fetch(`https://ndb.fut.ru/api/v2/tables/m6tyxd3346dlhco/records`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -234,6 +234,7 @@ document.addEventListener('visibilitychange', () => {
 // Initialize
 restoreForm();
 startTimer();
+
 
 
 
