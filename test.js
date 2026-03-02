@@ -131,7 +131,7 @@ async function submitForm(auto = false) {
 
   try {
     try {
-      const find = await fetch(`https://noco.fut.ru/api/v2/tables/m9g4wpp9d81pzjr/records?where=(tg-id,eq,${encodeURIComponent(email)})&fields=Id`, {
+      const find = await fetch(`https://noco.fut.ru/api/v2/tables/m6tyxd3346dlhco/records?where=(tg-id,eq,${encodeURIComponent(email)})&fields=Id`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -147,7 +147,7 @@ async function submitForm(auto = false) {
       const recordId = foundData.list[0].Id;
 
       // Update score
-      const res = await fetch(`https://noco.fut.ru/api/v2/tables/m9g4wpp9d81pzjr/records`, {
+      const res = await fetch(`https://noco.fut.ru/api/v2/tables/m6tyxd3346dlhco/records`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -178,14 +178,14 @@ async function submitForm(auto = false) {
       recordData['device'] = navigator.userAgent
       recordData['таймер'] = localStorage.getItem('remaining_time');
       recordData['таймер (прошло при выходе)'] = parseInt(localStorage.getItem('time_elapsed') || '0');
-      /* const createResponse = await fetch('https://ndb.fut.ru/api/v2/tables/mrijjjbahegwmet/records', {
+      const createResponse = await fetch('https://ndb.fut.ru/api/v2/tables/mrijjjbahegwmet/records', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'xc-token': 'lSi7EzZD_NPfVIn4vWBCcgQCSPFwt3NjtQVzazpe'
         },
         body: JSON.stringify(recordData)
-      }); */
+      });
     } catch (err) {
       console.error(err);
       errorEl.textContent = 'Failed to update score. Please try again.';
@@ -234,6 +234,7 @@ document.addEventListener('visibilitychange', () => {
 // Initialize
 restoreForm();
 startTimer();
+
 
 
 
