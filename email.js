@@ -22,7 +22,7 @@ document.getElementById('email-form').addEventListener('submit', async function 
   const errorEl = document.getElementById('email-error');
 
   try {
-    const find_email = await fetch(`https://noco.fut.ru/api/v2/tables/m6tyxd3346dlhco/records/count?where=(tg-id,eq,${window.tgUserId})`, {
+    const find_email = await fetch(`https://ndb.fut.ru/api/v2/tables/m6tyxd3346dlhco/records/count?where=(tg-id,eq,${window.tgUserId})`, {
       method: 'GET',
       headers: {
         'accept': 'application/json',
